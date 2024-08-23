@@ -179,7 +179,7 @@ public class AdminServices {
         chooseElectionOption.click();
         
      // Retrieve the value for party alliance from the data table
-        String selectalliance = data.get(1).get(1);  // Corrected to 'data' instead of 'data1'
+        String selectalliance = data.get(1).get(1);  
 
         // Locate the dropdown input field for selecting the party alliance
         WebElement select_alliance = driver.findElement(By.xpath("//input[@id='autocomplete-partyAllianceId']"));
@@ -189,11 +189,46 @@ public class AdminServices {
         WebElement select_allianceOptions = driver.findElement(By.xpath("//li[contains(text(),'" + selectalliance + "')]"));
         select_allianceOptions.click();  // Select the option
         
-        
+     // Retrieve the value for party leader from the data table
+        String partyLeader = data.get(2).get(1);  // Assuming the party leader is in the third row (index 2)
 
-        
-        
+        // Locate the input field for the party leader and enter the value
+        WebElement party_leader = driver.findElement(By.name("partyLeader"));
+        party_leader.sendKeys(partyLeader);
 
+        // Retrieve the value for party name from the data table
+        String partyName = data.get(3).get(1);  // Assuming the party name is in the fourth row (index 3)
+
+        // Locate the dropdown input field for selecting the party name
+        WebElement select_party = driver.findElement(By.xpath("//input[@id='autocomplete-partyName']"));
+        select_party.click();  // Click to reveal the dropdown options
+
+        // Use the retrieved value to locate the dropdown option and select it
+        WebElement select_partyOption = driver.findElement(By.xpath("//li[contains(text(),'" + partyName + "')]"));
+        select_partyOption.click();  // Select the option
+        
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,500)", "");
+        
+        
+        // Copy file path to clipboard
+//        StringSelection str = new StringSelection("C:\\Users\\rajso\\Desktop\\download.jpg");
+//        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+//
+//        // Create Robot instance for keyboard operations
+//        Robot rb = new Robot();
+//
+//        // Simulate Ctrl+V to paste the file path
+//        rb.keyPress(KeyEvent.VK_CONTROL);
+//        rb.keyPress(KeyEvent.VK_V);
+//        rb.keyRelease(KeyEvent.VK_V);
+//        rb.keyRelease(KeyEvent.VK_CONTROL);
+//
+//        // Simulate pressing Enter
+//        rb.keyPress(KeyEvent.VK_ENTER);
+//        rb.keyRelease(KeyEvent.VK_ENTER);
+
+    
 
    }	
         
