@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,6 +25,8 @@ public class AdminServices {
 
     WebDriver driver;
     
+    //Login
+    
     @Given("Admin is on the ATTPL EMS Landing Page")
     public void admin_is_on_the_attpl_ems_landing_page() 
     {
@@ -39,27 +43,48 @@ public class AdminServices {
     @When("Admin logs in with the registered mobile number and password")
     public void admin_logs_in_with_the_registered_mobile_number_and_password() 
     {
-    	driver.findElement(By.name("userphone")).sendKeys("9905899259");
-    	driver.findElement(By.xpath("//button[normalize-space()='Next']")).click();
-    	driver.findElement(By.name("password")).sendKeys("Password@004");
-    	driver.findElement(By.xpath("//button[normalize-space()='Login']")).click();
-    } 
+        try {
+            driver.findElement(By.name("userphone")).sendKeys("9905899259");
+            driver.findElement(By.xpath("//button[normalize-space()='Next']")).click();
+            driver.findElement(By.name("password")).sendKeys("Password@004");
+            driver.findElement(By.xpath("//button[normalize-space()='Login']")).click();
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            
+            WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='MuiAlert-message css-1xsto0d']")));
+
+            if (errorMessage.isDisplayed()) 
+            {
+                throw new Exception("Login failed due to incorrect details.");
+            }
+        } catch (TimeoutException e) 
+        {
+            System.out.println("Login successful, no error message found.");
+        } catch (Exception e) 
+        {
+            System.out.println(e.getMessage());
+        }
+    }
     
+    //After Successful Login
+  
     @Then("Admin should see the dashboard")
-    public void admin_should_see_the_dashboard()
+    public void admin_should_see_the_dashboard() 
     {
-    	String pagetitle= driver.getTitle();
-    	System.out.println(pagetitle);
-    	if(pagetitle.equals("ATTPL : Login"))
-    	{
-    		System.out.println("Login Successful");	
-    	}
-    	else
-    	{
-    		System.out.println("Login Failed");
-    	}
+        String pagetitle = driver.getTitle();
+        System.out.println(pagetitle);
+
+        if(pagetitle.equals("Dashboard: App")) 
+        {
+            System.out.println("Login Successful");
+        } 
+        else 
+        {
+            System.out.println("Login Failed");
+        }
     }
 
+    
     //Create Election
     
     @Given("Admin creates a new election")
@@ -105,9 +130,6 @@ public class AdminServices {
         WebElement methodOption = driver.findElement(By.xpath("//li[contains(text(),'" + methodValue + "')]"));
         methodOption.click();  // Select the option
         
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'" + methodValue + "')]")));
-
 
      // Retrieve the value for eligibility type from the data table
         String eligibilityTypeValue = data.get(6).get(1); // Example value: "NRI"
@@ -120,9 +142,6 @@ public class AdminServices {
         WebElement eligibilityTypeOption = driver.findElement(By.xpath("//li[contains(text(),'" + eligibilityTypeValue + "')]"));
         eligibilityTypeOption.click();  // Select the option
         
-//        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(),'" + eligibilityTypeValue + "')]"))) ;      
-//  
         driver.findElement(By.name("nominationStart")).sendKeys(data.get(7).get(1));
         driver.findElement(By.name("nominationEnd")).sendKeys(data.get(8).get(1));
         
@@ -131,25 +150,47 @@ public class AdminServices {
         
        driver.findElement(By.name("securityMeasures")).sendKeys(data.get(9).get(1));
        driver.findElement(By.name("electionDescription")).sendKeys(data.get(10).get(1));
-    
+
     }
 
     @When("Admin clicks on the Create Election button")
-    public void admin_clicks_on_the_create_election_button() {
+    public void admin_clicks_on_the_create_election_button() 
+    {
         driver.findElement(By.xpath("//button[@type='submit']")).click();
+        
+        String createmsg = driver.findElement(By.xpath("//div[@id='notistack-snackbar']")).getText(); 
+
+        if (createmsg.equals("Election created successfully")) 
+        {
+            System.out.println("Election created successfully");
+        } 
+        else 
+        {
+            System.out.println("Election not Created Successfully");
+        }
     }
    
     
     // Party Alliance 
     
-    @Given("Admin creates a new party alliance")
-    public void admin_creates_a_new_party_alliance() 
-    {
-    	driver.findElement(By.xpath("//span[contains(text(),'PARTY ALLIANCE MANAGEMENT')]")).click();
-    	driver.findElement(By.linkText("New Party Alliance")).click();
-    	driver.findElement(By.name("partyAllianceName")).sendKeys("TVC");
-    	driver.findElement(By.xpath("//button[@type='submit']")).click();      
+    public void admin_creates_a_new_party_alliance() {
+        driver.findElement(By.xpath("//span[contains(text(),'PARTY ALLIANCE MANAGEMENT')]")).click();
+        driver.findElement(By.linkText("New Party Alliance")).click();
+        driver.findElement(By.name("partyAllianceName")).sendKeys("TVC");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();      
+
+        String createmsg = driver.findElement(By.xpath("//div[@id='notistack-snackbar']")).getText(); 
+
+        if (createmsg.equals("Party Alliance created successfully")) 
+        {
+            System.out.println("Party Alliance created successfully");
+        } 
+        else 
+        {
+            System.out.println("Party Alliance not created successfully");
+        }
     }
+
     
     //Party
     
@@ -230,9 +271,12 @@ public class AdminServices {
 
     
 
-   }	
+   }
+
+   
+}
         
- }
+ 
 
 
 

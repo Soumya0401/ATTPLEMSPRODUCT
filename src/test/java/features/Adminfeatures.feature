@@ -6,7 +6,7 @@ Feature: ATTPL EMS Services
     When Admin logs in with the registered mobile number and password
     Then Admin should see the dashboard
 
-   @SmokeTest
+   @WebTest
    Scenario: Admin Creates a New Election
 
   Given Admin creates a new election
@@ -29,6 +29,7 @@ Feature: ATTPL EMS Services
   
   #Party Alliance
   
+  @SmokeTest
   Scenario: Admin Creates Party Alliance 
   Given Admin creates a new party alliance
   #Then  Admin should see the Party Alliance List
