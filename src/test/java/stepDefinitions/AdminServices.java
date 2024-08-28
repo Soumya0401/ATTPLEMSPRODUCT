@@ -401,99 +401,114 @@ public class AdminServices {
      {
          List<List<String>> data = dataTable.cells();
          
+         String userName = data.get(0).get(1);
+         WebElement userNameInput = driver.findElement(By.id("autocomplete-userId"));
+         selectDropdownOptions(userNameInput, userName);
+         
+         
+         String choseElection = data.get(1).get(1);
+         WebElement choseElectionInput = driver.findElement(By.id("autocomplete-electionId"));
+         selectDropdownOptions(choseElectionInput, choseElection);
+         
+         String choseParty = data.get(2).get(1);
+         WebElement chosePartyInput = driver.findElement(By.id("autocomplete-partyId"));
+         selectDropdownOptions(chosePartyInput, choseParty);
+         
+         String legalCase = data.get(3).get(1);
+         WebElement legalCaseInput = driver.findElement(By.id("autocomplete-legalCase"));
+         selectDropdownOptions(legalCaseInput, legalCase);
            
-        String userName = data.get(0).get(1);
-        WebElement userNameInput = driver.findElement(By.id("autocomplete-userId"));
-        userNameInput.click();  
-        
-        List<WebElement> userNameOptions = driver.findElements(By.xpath("//li[contains(text(),'" + userName + "')]")); 
-
-        for (WebElement option : userNameOptions) {
-            String optionText = option.getText();
-            System.out.println("Dropdown Option: " + optionText);
-
-            if (optionText.equals(userName)) 
-            {
-                option.click();
-                break;  
-            }
-        }
-        
-       String choseElection = data.get(1).get(1);
-       WebElement choseElectionInput = driver.findElement(By.id("autocomplete-electionId"));
-       choseElectionInput.click();  
-
-       List<WebElement> choseElectionOptions = driver.findElements(By.xpath("//li[contains(text(),'" + choseElection + "')]")); 
-
-      for (WebElement option : choseElectionOptions) {
-          String optionText = option.getText();
-          System.out.println("Dropdown Option: " + optionText);
-
-          if (optionText.equals(choseElection)) {
-              option.click();
-              break;  
-          }
-      }
-      
-      String choseParty = data.get(2).get(1);
-      WebElement chosePartyInput = driver.findElement(By.id("autocomplete-partyId"));
-      chosePartyInput.click();
-
-      List<WebElement> chosePartyOptions = driver.findElements(By.xpath("//li[contains(text(),'" + choseParty + "')]")); 
-
-      for (WebElement option : chosePartyOptions) 
-      {
-        String optionText = option.getText();
-        System.out.println("Dropdown Option: " + optionText);
-
-        if (optionText.equals(choseParty)) 
-        {
-            option.click();
-            break;  
-        }
+        WebElement createCandidateBtn = driver.findElement(By.xpath("//button[@type='submit']"));
+        createCandidateBtn.click();           
     }
-    
-     String legalCase = data.get(3).get(1);
-     WebElement legalCaseInput = driver.findElement(By.id("autocomplete-legalCase"));
-     legalCaseInput.click();  
-
-     List<WebElement> legalCaseOptions = driver.findElements(By.xpath("//li[contains(text(),'" + legalCase + "')]")); 
-
-     for (WebElement option : legalCaseOptions) 
-     {
-        String optionText = option.getText();
-        System.out.println("Dropdown Option: " + optionText);
-
-        if (optionText.equals(legalCase)) 
-         {
-             option.click();
-             break;  
-         }
-    } 
      
-     WebElement createCandidateBtn = driver.findElement(By.xpath("//button[@type='submit']"));
-     createCandidateBtn.click();
-           
-    }
+     private void selectDropdownOptions(WebElement inputElement, String optionText) {
+         inputElement.click();
+         List<WebElement> options = driver.findElements(By.xpath("//li[contains(text(),'" + optionText + "')]"));
+         for (WebElement option : options) {
+             if (option.getText().equals(optionText)) {
+                 option.click();
+                 break;
+             }
+         }
+     }
      
 //////////////////////////////////////////// Ward Management //////////////////////////////////////////////////////////     
  
-     @Given("Admins Creates a new wards")
-     public void admin_Creates_a_new_wards() 
+     @Given("Admin creates a new ward")
+     public void admin_creates_a_new_ward() 
      {
-    	 driver.findElement(By.xpath("//span[contains(text(),'ELECTION MANAGEMENT')]")).click();
-    	 driver.findElement(By.xpath("//span[contains(text(),'WARD LIST DETAILS')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'ELECTION MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'WARD LIST DETAILS')]")).click();
          driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
          driver.findElement(By.linkText("New Ward")).click();   
      }
      
      @When("Admin fills the Ward Creation form with the dataTable:")
-     public void admin_fills_the_Ward_Creation_form_with_the_data_table(DataTable dataTable) 
-     {
-    	 
+     public void admin_fills_the_Ward_Creation_form_with_the_data_table(DataTable dataTable) {
+         List<List<String>> data = dataTable.cells();
+         
+         String electionName = data.get(0).get(1);
+         WebElement electionInput = driver.findElement(By.id("autocomplete-electionId"));
+         selectDropdownOption(electionInput, electionName);
+         
+         driver.findElement(By.name("wardNumber")).sendKeys(data.get(1).get(1));
+         
+         driver.findElement(By.name("wardName")).sendKeys(data.get(2).get(1));
+         
+         driver.findElement(By.name("wardStreetAddress")).sendKeys(data.get(3).get(1));
+         
+         driver.findElement(By.name("wardPostalCode")).sendKeys(data.get(4).get(1));
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,300)", "");
+         
+         String districtName = data.get(5).get(1);
+         WebElement districtInput = driver.findElement(By.id("autocomplete-districtName"));
+         selectDropdownOption(districtInput, districtName);
+         
+         String tehsilName = data.get(6).get(1);
+         WebElement tehsilInput = driver.findElement(By.id("autocomplete-tehsilName"));
+         selectDropdownOption(tehsilInput, tehsilName);
+         
+         String wardCity = data.get(7).get(1);
+         WebElement wardCityInput = driver.findElement(By.id("autocomplete-wardCity"));
+         selectDropdownOption(wardCityInput, wardCity);
+         
+         String wardState = data.get(8).get(1);
+         WebElement wardStateInput = driver.findElement(By.id("autocomplete-wardState"));
+         selectDropdownOption(wardStateInput, wardState);
+         
+         JavascriptExecutor js1 = (JavascriptExecutor) driver;
+         js1.executeScript("window.scrollBy(0,500)", "");
+         
+         String wardCountry = data.get(9).get(1);
+         WebElement wardCountryInput = driver.findElement(By.id("autocomplete-wardCountry"));
+         selectDropdownOption(wardCountryInput, wardCountry);
+         
+         String wardCapacity = data.get(10).get(1);
+         WebElement wardCapacityInput = driver.findElement(By.id("autocomplete-wardCapacity"));
+         selectDropdownOption(wardCapacityInput, wardCapacity);
+        
+         driver.findElement(By.name("emergencyContactNumber")).sendKeys(data.get(11).get(1));
+        
+         driver.findElement(By.name("incidentReporting")).sendKeys(data.get(12).get(1));
+         
+         driver.findElement(By.name("securityMeasures")).sendKeys(data.get(13).get(1));
+         
+         driver.findElement(By.xpath("//button[@type='submit']")).click();
      }
-     
-     
+
+     private void selectDropdownOption(WebElement inputElement, String optionText) {
+         inputElement.click();
+         List<WebElement> options = driver.findElements(By.xpath("//li[contains(text(),'" + optionText + "')]"));
+         for (WebElement option : options) {
+             if (option.getText().equals(optionText)) {
+                 option.click();
+                 break;
+             }
+         }
+     }
 }
         
  

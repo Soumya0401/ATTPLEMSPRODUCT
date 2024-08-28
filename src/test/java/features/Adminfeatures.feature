@@ -55,7 +55,7 @@ Feature: ATTPL EMS Services
     
     #Candidate Management
     
-   @MobileTest 
+  
    Scenario: Admin Register Candidate for Election
 
   Given Admin registers a new candidate
@@ -91,27 +91,26 @@ Feature: ATTPL EMS Services
     
     #Ward Management
     
-    Scenario: Admin Creates Ward
-    
-    Given: Admins Creates a new wards
-    When Admin fills the Ward Creation form with the dataTable:
-    
+   Scenario: Admin Creates Ward
+
+   Given Admin creates a new ward
+   When Admin fills the Ward Creation form with the dataTable:
+                                                  
     | Choose Election               | General Election                   |
     | Ward Number                   | 11                                 |
     | Ward Name                     | Muzaffarpur                        |
-    | Ward Street Adress            | Near ICICI Bank                    |
+    | Ward Street Address           | Near ICICI Bank                    |
     | Ward Postal Code              | 844127                             |
     | District Name                 | Delhi                              |
     | Tehsil                        | Delhi                              |
     | Ward City                     | Delhi                              |
     | Ward State                    | Delhi                              |
-    | Ward Country                  | India                              |
-    | Number of Ward Voters         | 200                                |
+    | Ward Country                  | INDIA                              |
+    | Number of Ward Voters         | 500                               |
     | Ward Leader Contact Number    | 9977665544                         |
     | Incident Reporting            | call +91                           |
     | Security Measure              | Provide security feature to voters |
-    
-    
-    
-  
+
+   #Then the ward should be created successfully
+
 
