@@ -445,12 +445,13 @@ public class AdminServices {
      }
      
      @When("Admin fills the Ward Creation form with the dataTable:")
-     public void admin_fills_the_Ward_Creation_form_with_the_data_table(DataTable dataTable) {
+     public void admin_fills_the_Ward_Creation_form_with_the_data_table(DataTable dataTable) 
+     {
          List<List<String>> data = dataTable.cells();
          
          String electionName = data.get(0).get(1);
          WebElement electionInput = driver.findElement(By.id("autocomplete-electionId"));
-         selectDropdownOption(electionInput, electionName);
+         selectDropdownOption1(electionInput, electionName);
          
          driver.findElement(By.name("wardNumber")).sendKeys(data.get(1).get(1));
          
@@ -465,30 +466,30 @@ public class AdminServices {
          
          String districtName = data.get(5).get(1);
          WebElement districtInput = driver.findElement(By.id("autocomplete-districtName"));
-         selectDropdownOption(districtInput, districtName);
+         selectDropdownOption1(districtInput, districtName);
          
          String tehsilName = data.get(6).get(1);
          WebElement tehsilInput = driver.findElement(By.id("autocomplete-tehsilName"));
-         selectDropdownOption(tehsilInput, tehsilName);
+         selectDropdownOption1(tehsilInput, tehsilName);
          
          String wardCity = data.get(7).get(1);
          WebElement wardCityInput = driver.findElement(By.id("autocomplete-wardCity"));
-         selectDropdownOption(wardCityInput, wardCity);
+         selectDropdownOption1(wardCityInput, wardCity);
          
          String wardState = data.get(8).get(1);
          WebElement wardStateInput = driver.findElement(By.id("autocomplete-wardState"));
-         selectDropdownOption(wardStateInput, wardState);
+         selectDropdownOption1(wardStateInput, wardState);
          
          JavascriptExecutor js1 = (JavascriptExecutor) driver;
          js1.executeScript("window.scrollBy(0,500)", "");
          
          String wardCountry = data.get(9).get(1);
          WebElement wardCountryInput = driver.findElement(By.id("autocomplete-wardCountry"));
-         selectDropdownOption(wardCountryInput, wardCountry);
+         selectDropdownOption1(wardCountryInput, wardCountry);
          
          String wardCapacity = data.get(10).get(1);
          WebElement wardCapacityInput = driver.findElement(By.id("autocomplete-wardCapacity"));
-         selectDropdownOption(wardCapacityInput, wardCapacity);
+         selectDropdownOption1(wardCapacityInput, wardCapacity);
         
          driver.findElement(By.name("emergencyContactNumber")).sendKeys(data.get(11).get(1));
         
@@ -497,6 +498,69 @@ public class AdminServices {
          driver.findElement(By.name("securityMeasures")).sendKeys(data.get(13).get(1));
          
          driver.findElement(By.xpath("//button[@type='submit']")).click();
+     }
+
+     private void selectDropdownOption1(WebElement inputElement, String optionText) {
+         inputElement.click();
+         List<WebElement> options = driver.findElements(By.xpath("//li[contains(text(),'" + optionText + "')]"));
+         for (WebElement option : options) {
+             if (option.getText().equals(optionText)) {
+                 option.click();
+                 break;
+             }
+         }
+     }
+     
+     
+/////////////////////////////////////// Booth Management //////////////////////////////////////////////////
+
+     @Given("Admin creates a new booth")
+     public void admin_creates_a_new_booth() {
+         driver.findElement(By.xpath("//span[contains(text(),'ELECTION MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'BOOTH LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Booth")).click();  
+     }
+
+     @When("Admin fills the booth creation form with the dataTable:")
+     public void admin_fills_the_booth_creation_form_with_the_data_table(DataTable dataTable) 
+     {
+         List<List<String>> data = dataTable.cells();
+         
+         driver.findElement(By.name("boothName")).sendKeys(data.get(0).get(1));
+        
+         String boothName = data.get(1).get(1);
+         WebElement boothNameInput = driver.findElement(By.id("autocomplete-boothDimensions"));
+         selectDropdownOption(boothNameInput, boothName);
+         
+         String boothCapacity = data.get(2).get(1);
+         WebElement boothCapacityInput = driver.findElement(By.id("autocomplete-boothCapacity"));
+         selectDropdownOption(boothCapacityInput, boothCapacity);
+         
+         driver.findElement(By.name("boothStreetAddress")).sendKeys(data.get(3).get(1));
+         
+         String boothCity = data.get(4).get(1);
+         WebElement boothCityInput = driver.findElement(By.id("autocomplete-boothCity"));
+         selectDropdownOption(boothCityInput, boothCity);
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,500)", "");
+                  
+         String boothState = data.get(5).get(1);
+         WebElement boothStateInput = driver.findElement(By.id("autocomplete-boothState"));
+         selectDropdownOption(boothStateInput, boothState);
+         
+         driver.findElement(By.name("boothPostalCode")).sendKeys(data.get(6).get(1));
+         
+         String boothCountry = data.get(7).get(1);
+         WebElement boothCountryInput = driver.findElement(By.id("autocomplete-boothCountry"));
+         selectDropdownOption(boothCountryInput, boothCountry);
+         
+         String wardName = data.get(8).get(1);
+         WebElement wardNameInput = driver.findElement(By.id("autocomplete-wardId"));
+         selectDropdownOption(wardNameInput, wardName);
+         
+         driver.findElement(By.xpath("//button[@type='submit']")).click();       
      }
 
      private void selectDropdownOption(WebElement inputElement, String optionText) {
@@ -509,7 +573,343 @@ public class AdminServices {
              }
          }
      }
-}
+
+///////////////////////////////////////// Polling Management ////////////////////////////////////////////////////
+     
+     @Given("Admin creates a new poll")
+     public void admin_creates_a_new_poll() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'ELECTION MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'POLLING LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Poll")).click();  
+    	      
+     }
+     
+     @When("Admin fills the poll creation form with the dataTable:")
+     public void admin_fills_the_poll_creation_form_with_the_data_table(DataTable dataTable) 
+     {
+    	 
+         List<List<String>> data = dataTable.cells();
+         
+         String boothName = data.get(0).get(1);
+         WebElement boothNameInput = driver.findElement(By.id("autocomplete-boothId"));
+         selectDropdownOption2(boothNameInput, boothName);
+         
+         driver.findElement(By.name("pollingStationName")).sendKeys(data.get(1).get(1));
+         
+         String pollingCapacity = data.get(2).get(1);
+         WebElement pollingCapacityInput = driver.findElement(By.id("autocomplete-pollingCapacity"));
+         selectDropdownOption2(pollingCapacityInput, pollingCapacity);
+         
+         driver.findElement(By.name("numberOfBooth")).sendKeys(data.get(3).get(1));
+         
+         driver.findElement(By.xpath("//button[@type='submit']")).click();      
+         
+     } 
+     
+     private void selectDropdownOption2(WebElement inputElement, String optionText) {
+         inputElement.click();
+         List<WebElement> options = driver.findElements(By.xpath("//li[contains(text(),'" + optionText + "')]"));
+         for (WebElement option : options) {
+             if (option.getText().equals(optionText)) {
+                 option.click();
+                 break;
+             }
+      }
+   }
+     
+////////////////////////////////////////// Voter Management //////////////////////////////////////////////////////     
+     
+     @Given("Admin registers a new voter")
+     public void admin_registers_a_new_voter() 
+     { 	 
+         driver.findElement(By.xpath("//span[contains(text(),'ELECTION MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'VOTERS LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Voter")).click();  	 
+     }
+          
+     @When("Admin fills the voter registration form with the dataTable:")
+     public void admin_fills_the_voter_registration_form_with_the_data_table(DataTable dataTable) 
+     {
+         List<List<String>> data = dataTable.cells();
+          
+         WebElement mobileNumberInput = driver.findElement(By.name("phone"));
+         mobileNumberInput.sendKeys(data.get(0).get(1));
+
+         WebElement firstNameInput = driver.findElement(By.name("firstName"));
+         firstNameInput.sendKeys(data.get(1).get(1));
+
+         WebElement lastNameInput = driver.findElement(By.name("lastName"));
+         lastNameInput.sendKeys(data.get(2).get(1));
+
+         WebElement fatherNameInput = driver.findElement(By.name("fatherName"));
+         fatherNameInput.sendKeys(data.get(3).get(1));
+         
+         WebElement nextBtn1 = driver.findElement(By.xpath("//button[@type='submit']"));
+         nextBtn1.click();
+
+         WebElement wardNumberInput = driver.findElement(By.name("wardNo"));
+         wardNumberInput.sendKeys(data.get(4).get(1));
+
+         WebElement panchayatNameInput = driver.findElement(By.name("panchayatName"));
+         panchayatNameInput.sendKeys(data.get(5).get(1));
+
+         WebElement tehsilNameInput = driver.findElement(By.name("tehsilName"));
+         tehsilNameInput.sendKeys(data.get(6).get(1));
+         
+         String partyName = data.get(7).get(1);
+         WebElement partyNameInput = driver.findElement(By.id("autocomplete-partyId"));
+         selectDropdownOption3(partyNameInput, partyName);
+         
+         WebElement nextBtn2 = driver.findElement(By.xpath("//button[@type='submit']"));
+         nextBtn2.click();
+         
+         String currentJob = data.get(8).get(1);
+         WebElement currentJobInput = driver.findElement(By.id("autocomplete-currentJobTitle"));
+         selectDropdownOption3(currentJobInput, currentJob);
+                   
+         WebElement districtNameInput = driver.findElement(By.name("districtName"));
+         districtNameInput.sendKeys(data.get(9).get(1));
+
+         String state = data.get(10).get(1);
+         WebElement stateInput = driver.findElement(By.id("autocomplete-userState"));
+         selectDropdownOption3(stateInput, state); 
+
+         WebElement nextBtn3 = driver.findElement(By.xpath("//button[@type='submit']"));
+         nextBtn3.click();
+
+         WebElement passwordInput = driver.findElement(By.name("password"));
+         passwordInput.sendKeys(data.get(11).get(1));
+
+         WebElement confirmPasswordInput = driver.findElement(By.name("confirmPassword"));
+         confirmPasswordInput.sendKeys(data.get(12).get(1));
+
+         driver.findElement(By.xpath("(//button[normalize-space()='Create New Voter'])[1]")).click();       
+             
+     }
+         
+     private void selectDropdownOption3(WebElement inputElement, String optionText) {
+         inputElement.click();
+         List<WebElement> options = driver.findElements(By.xpath("//li[contains(text(),'" + optionText + "')]"));
+         for (WebElement option : options) {
+             if (option.getText().equals(optionText)) {
+                 option.click();
+                 break;
+             }
+         }      
+     }
+     
+///////////////////////////////////////// Survey Management /////////////////////////////////////////////////////
+    
+     @Given("Admin creates a new Survey")
+     public void admin_creates_a_new_survey() 
+     {
+    	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+    	 WebElement electionManagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'ELECTION MANAGEMENT')]")));
+    	 electionManagement.click();
+
+    	 WebElement surveyManagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'SURVEY MANAGEMENT')]")));
+    	 surveyManagement.click();
+
+    	 WebElement surveyListDetails = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'SURVEY LIST DETAILS')]")));
+    	 surveyListDetails.click();
+    	 
+    	 WebElement newSurveyButton = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("New Survey")));
+    	newSurveyButton.click();
+	 
+     }
+     
+     @When("Admin fills the create survey form with the following data:")
+     public void admin_fills_the_create_survey_form_with_the_following_data(DataTable dataTable) {
+
+         List<List<String>> data = dataTable.cells();
+
+         driver.findElement(By.name("surveyName")).sendKeys(data.get(0).get(1));
+
+         driver.findElement(By.name("surveyTitle")).sendKeys(data.get(1).get(1));
+
+         driver.findElement(By.name("surveyDescription")).sendKeys(data.get(2).get(1));
+
+         WebElement selectUsersButton = driver.findElement(By.xpath("//button[contains(text(),'Select All Users')]"));
+         selectUsersButton.click();
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,500)", "");
+
+         driver.findElement(By.xpath("(//button[normalize-space()='Add duration'])[1]")).click();
+         
+         WebElement startDateElement = driver.findElement(By.xpath("(//button[contains(@aria-label,'Choose date')])[1]"));
+         startDateElement.sendKeys(data.get(4).get(1).split(";")[0]);
+
+         WebElement endDateElement = driver.findElement(By.xpath("(//button[contains(@aria-label,'Choose date')])[2]"));
+         endDateElement.sendKeys(data.get(4).get(1).split(";")[1]);
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Done'])[1]")).click();
+
+         WebElement surveyStatusElement = driver.findElement(By.xpath("//input[@value='Open']"));
+         surveyStatusElement.click();
+         
+         driver.findElement(By.xpath("//span[@class='MuiButton-icon MuiButton-startIcon MuiButton-iconSizeMedium css-1l6c7y9']//*[name()='svg']")).click();
+         
+         driver.findElement(By.name("questionDescription")).sendKeys("Is EMS Software User-Friendly or Not?");
+         
+         driver.findElement(By.xpath("//input[@class='MuiInputBase-input MuiOutlinedInput-input MuiAutocomplete-input MuiAutocomplete-inputFocused css-epd5gc']")).sendKeys("Yes || No");
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Done'])[1]")).click();
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Create Survey'])[1]")).click();
+         
+         
+     }
+     
+     @Given("Admin click the Survey Response Lists")
+     public void admin_click_the_survey_response_lists() throws InterruptedException 
+     {
+    	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+    	 WebElement electionManagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'ELECTION MANAGEMENT')]")));
+    	 electionManagement.click();
+
+    	 WebElement surveyManagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'SURVEY MANAGEMENT')]")));
+    	 surveyManagement.click();
+    	 
+    	 WebElement surveyResponseList = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'SURVEY RESPONSE LIST DETAILS')]")));
+    	 surveyResponseList.click();
+    	 
+    	 Thread.sleep(1000);
+    	 
+    	 JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,700)", "");
+         
+         Thread.sleep(3000);
+         
+         WebElement nextPageButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@title,'Go to next page')]//*[name()='svg']")));
+         nextPageButton.click();   	        
+     }  
+     
+////////////////////////////////////////////// Template Management //////////////////////////////////////////////     
+     
+     @Given("Admin upload the new Template")
+     public void admin_upload_the_new_template() throws AWTException, InterruptedException 
+     {
+    	 
+    	 driver.findElement(By.xpath("//span[contains(text(),'SOCIAL MEDIA MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'TEMPLATE LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.xpath("(//*[name()='svg'][@class='component-iconify MuiBox-root css-1t9pz9x iconify iconify--mingcute'])[1]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+         StringSelection str = new StringSelection("C:\\Users\\rajso\\Desktop\\BJP.jpg");
+         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+         Robot rb = new Robot();
+      
+         Thread.sleep(1000); 
+
+         // Simulate pressing Ctrl+V to paste the file path
+            rb.keyPress(KeyEvent.VK_CONTROL);
+            rb.keyPress(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_CONTROL);
+
+         // Simulate pressing Enter to confirm the file selection
+            rb.keyPress(KeyEvent.VK_ENTER);
+            rb.keyRelease(KeyEvent.VK_ENTER);
+            
+            driver.findElement(By.xpath("//button[normalize-space()='Upload']")).click();  	 
+     }
+     
+/////////////////////////////////////////// Expense Management System ////////////////////////////////////////////////////////////////
+         
+     @Given("Admin Create a expense category list")
+     public void admin_create_a_expense_category_list() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'EXPENSE MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'CATEGORY LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Category")).click();  	 
+    	 
+         
+     }
+     @When("Admin fills the create Category form with the following data:")
+     public void admin_fills_the_create_category_form_with_the_following_data(DataTable dataTable) 
+     {
+    	 List<List<String>> data = dataTable.cells();
+    	 WebElement categoryDeatils = driver.findElement(By.name("expenseCategoryName"));
+    	 categoryDeatils.sendKeys(data.get(0).get(1));
+    	 
+    	 driver.findElement(By.xpath("(//button[normalize-space()='Create Category'])[1]")).click();
+    	       
+     }
+//     @Then("Admin see the Category List")
+//     public void admin_see_the_category_list() {
+
+//     }
+     
+     @Given("Admin Create Expense claim lists")
+     public void admin_create_expense_claim_lists() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'EXPENSE MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'CLAIM LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Claim")).click();  	 
+    	          
+     }
+     @When("Admin fills the create claim form with the following data:")
+     public void admin_fills_the_create_claim_form_with_the_following_data(DataTable dataTable) 
+     {
+    	 List<List<String>> data = dataTable.cells();
+    	 
+    	 String categoryName = data.get(0).get(1);
+         WebElement categoryNameInput = driver.findElement(By.id("autocomplete-expenseCategoryId"));
+         selectDropdownOption4(categoryNameInput, categoryName);
+    	 
+    	 WebElement amount = driver.findElement(By.name("amount"));
+    	 amount.sendKeys(data.get(1).get(1));
+    	 
+    	 String paymentMethod = data.get(2).get(1);
+         WebElement paymentMethodInput = driver.findElement(By.id("autocomplete-paymentMethod"));
+         selectDropdownOption4(paymentMethodInput, paymentMethod);
+         
+         String purchaseDate = data.get(3).get(1);
+         WebElement purchaseDateInput = driver.findElement(By.id("purchaseDate"));
+         selectDropdownOption4(purchaseDateInput, purchaseDate);
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,300)", "");
+         
+         WebElement description = driver.findElement(By.name("description"));
+         description.sendKeys(data.get(4).get(1));
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Create Claim'])[1]")).click();    
+     }
+     
+     private void selectDropdownOption4(WebElement inputElement, String optionText) {
+         inputElement.click();
+         List<WebElement> options = driver.findElements(By.xpath("//li[contains(text(),'" + optionText + "')]"));
+         for (WebElement option : options) {
+             if (option.getText().equals(optionText)) {
+                 option.click();
+                 break;
+             }
+         }      
+     }
+//     @Then("Admin see the Cliam List")
+//     public void admin_see_the_cliam_list() {
+//         // Write code here that turns the phrase above into concrete actions
+//         throw new io.cucumber.java.PendingException();
+//     }
+
+
+
+     
+  }  
+    
+
+
         
  
 
