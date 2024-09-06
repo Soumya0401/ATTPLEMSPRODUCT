@@ -6,12 +6,14 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -902,9 +904,652 @@ public class AdminServices {
 //         // Write code here that turns the phrase above into concrete actions
 //         throw new io.cucumber.java.PendingException();
 //     }
+     
+/////////////////////////////////////////////User Management System //////////////////////////////////////////     
+     
+     @Given("The Admin is on the Create Role page")
+     public void the_admin_is_on_the_create_role_page() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'USER MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'USER ROLE LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Role")).click();  	 
+     }
+     
+     @When("The Admin fills in the create role form with the following data:")
+     public void the_admin_fills_in_the_create_role_form_with_the_following_data(DataTable dataTable) 
+     {
+         List<List<String>> data = dataTable.cells();
+    	 
+    	 String createRole = data.get(0).get(1);
+         WebElement createRoleInput = driver.findElement(By.id("autocomplete-productId"));
+         selectDropdownOption(createRoleInput, createRole);
+         
+         WebElement addRole = driver.findElement(By.name("userRoleType"));
+         addRole.sendKeys(data.get(1).get(1));
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Add New Role Type'])[1]")).click();  
+                 
+     }
+     
+//     @Then("the Admin should see the updated Role List")
+//     public void the_admin_should_see_the_updated_role_list() 
+//     {
+//    	 
+//         
+//     }
+     
+     
+     @Given("Admin registers a new member")
+     public void admin_registers_a_new_member() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'USER MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'USER LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("Add New Member")).click();  
+         
+     }
+     @When("Admin fills the member registration form with the dataTable:")
+     public void admin_fills_the_member_registration_form_with_the_data_table(DataTable dataTable) 
+     {
+    	 
+        List<List<String>> data = dataTable.cells();
+    	 
+    	 String chooseProduct = data.get(0).get(1);
+         WebElement chooseProductInput = driver.findElement(By.id("autocomplete-productId"));
+         selectDropdownOption(chooseProductInput, chooseProduct);
+         
+         String currentRole = data.get(1).get(1);
+         WebElement currentRoleInput = driver.findElement(By.id("autocomplete-RoleId"));
+         selectDropdownOption(currentRoleInput, currentRole);
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Next'])[1]")).click();
+         
+         WebElement mobileNumberInput = driver.findElement(By.name("phone"));
+         mobileNumberInput.sendKeys(data.get(2).get(1));
+
+         WebElement firstNameInput = driver.findElement(By.name("firstName"));
+         firstNameInput.sendKeys(data.get(3).get(1));
+
+         WebElement lastNameInput = driver.findElement(By.name("lastName"));
+         lastNameInput.sendKeys(data.get(4).get(1));
+
+         WebElement fatherNameInput = driver.findElement(By.name("fatherName"));
+         fatherNameInput.sendKeys(data.get(5).get(1));
+         
+         WebElement nextBtn = driver.findElement(By.xpath("(//button[normalize-space()='Next'])[1])"));
+         nextBtn.click();
+
+         WebElement wardNumberInput = driver.findElement(By.name("wardNo"));
+         wardNumberInput.sendKeys(data.get(6).get(1));
+
+         WebElement panchayatNameInput = driver.findElement(By.name("panchayatName"));
+         panchayatNameInput.sendKeys(data.get(7).get(1));
+
+         WebElement tehsilNameInput = driver.findElement(By.name("tehsilName"));
+         tehsilNameInput.sendKeys(data.get(8).get(1));
+         
+         WebElement nextBtn1 = driver.findElement(By.xpath("(//button[normalize-space()='Next'])[1])"));
+         nextBtn1.click();
+         
+         String currentJob = data.get(9).get(1);
+         WebElement currentJobInput = driver.findElement(By.id("autocomplete-currentJobTitle"));
+         selectDropdownOption3(currentJobInput, currentJob);
+                   
+         WebElement districtNameInput = driver.findElement(By.name("districtName"));
+         districtNameInput.sendKeys(data.get(10).get(1));
+
+         String state = data.get(11).get(1);
+         WebElement stateInput = driver.findElement(By.id("autocomplete-userState"));
+         selectDropdownOption3(stateInput, state); 
+
+         WebElement nextBtn2 = driver.findElement(By.xpath("(//button[normalize-space()='Next'])[1])"));
+         nextBtn2.click();
+         
+         WebElement passwordInput = driver.findElement(By.name("password"));
+         passwordInput.sendKeys(data.get(12).get(1));
+
+         WebElement confirmPasswordInput = driver.findElement(By.name("confirmPassword"));
+         confirmPasswordInput.sendKeys(data.get(13).get(1));
+
+         driver.findElement(By.xpath("(//button[normalize-space()='Create New Voter'])[1]")).click();       
+                
+     }
+     
+//     @Then("the menber registration should be created successfully")
+//     public void the_menber_registration_should_be_created_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin Fetch the Member List")
+//     public void admin_fetch_the_member_list() 
+//     {
+//         
+//     }
+
+
+////////////////////////////////////////////// Support Ticket Management ///////////////////////////////////////
+
+     @Given("Admin creates a new Support Ticket")
+     public void admin_creates_a_new_support_ticket() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'SUPPORT TICKET LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Support Ticket")).click();  
+   	        
+     }
+     @When("Admin fills the support Ticket form with the following details:")
+     public void admin_fills_the_support_ticket_form_with_the_following_details(DataTable dataTable) throws AWTException, InterruptedException 
+     {
+        List<List<String>> data = dataTable.cells();
+    	 
+         WebElement serviceName = driver.findElement(By.name("service_name"));
+         serviceName.sendKeys(data.get(0).get(1));
+         
+         WebElement assignTo = driver.findElement(By.id("assignee_id"));
+         assignTo.sendKeys(data.get(1).get(1));
+          
+         WebElement issueTitle = driver.findElement(By.name("issue_title"));
+         issueTitle.sendKeys(data.get(2).get(1));
+             
+         String choosePriority = data.get(3).get(1);
+         WebElement choosePriorityInput = driver.findElement(By.id("autocomplete-priority"));
+         selectDropdownOption(choosePriorityInput, choosePriority);
+         
+         String statusChange = data.get(4).get(1);
+         WebElement statusChangeInput = driver.findElement(By.id("autocomplete-priority"));
+         selectDropdownOption(statusChangeInput, statusChange);
+         
+         WebElement description = driver.findElement(By.name("issue_description"));
+         description.sendKeys(data.get(5).get(1));
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,300)", "");
+         
+         driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+         StringSelection str = new StringSelection("C:\\Users\\rajso\\Desktop\\BJP.jpg");
+         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+         Robot rb = new Robot();
+      
+         Thread.sleep(1000); 
+
+         // Simulate pressing Ctrl+V to paste the file path
+            rb.keyPress(KeyEvent.VK_CONTROL);
+            rb.keyPress(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_CONTROL);
+
+         // Simulate pressing Enter to confirm the file selection
+            rb.keyPress(KeyEvent.VK_ENTER);
+            rb.keyRelease(KeyEvent.VK_ENTER); 
+            
+           driver.findElement(By.xpath("(//button[normalize-space()='Create Support Ticket'])[1]")).click();           
+     }
+     
+    @Then("the ticket should be created successfully")
+     public void the_ticket_should_be_created_successfully() {
+    	    // Assuming there's a success message or a specific element that confirms ticket creation
+    	    WebElement successMessage = driver.findElement(By.xpath("//div[contains(@class,'alert-success')]"));
+    	    Assert.assertTrue("Ticket creation success message is not displayed", successMessage.isDisplayed());
+
+    	    String expectedMessage = "Support Ticket created successfully";
+    	    String actualMessage = successMessage.getText();
+    	    Assert.assertEquals("Ticket creation message mismatch", expectedMessage, actualMessage);
+    	}
+
+    	@Then("Admin fetches the Ticket List")
+    	public void admin_fetches_the_ticket_list() {
+    	    // Assuming there's a button or a link to navigate to the Ticket List
+    	    WebElement ticketListButton = driver.findElement(By.xpath("//a[normalize-space()='Ticket List']"));
+    	    ticketListButton.click();
+
+    	    // Verifying the ticket is listed
+    	    List<WebElement> ticketRows = driver.findElements(By.xpath("//table[@id='ticket-table']//tr"));
+    	    Assert.assertTrue("Ticket list is empty or not displayed", ticketRows.size() > 0);
+
+    	    // Optionally, verify specific details of the created ticket
+    	    boolean ticketFound = false;
+    	    for (WebElement row : ticketRows) {
+    	        String ticketName = row.findElement(By.xpath("//td[contains(text(),'EMS services feature is not working properly')]")).getText();
+    	        if (ticketName.contains("EMS services feature is not working properly")) {
+    	            ticketFound = true;
+    	            break;
+    	        }
+    	    }
+    	    Assert.assertTrue("Created ticket is not found in the list", ticketFound);
+    	}
+     
+////////////////////////////////////////////////////Blog Management System //////////////////////////////////////////     
+
+     @Given("Admin creates a new Blog")
+     public void admin_creates_a_new_blog() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'BLOG LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Post")).click();     
+     }
+     @When("Admin fills the blog form with the following details:")
+     public void admin_fills_the_blog_form_with_the_following_details(DataTable dataTable) 
+     {
+    	 
+         List<List<String>> data = dataTable.cells();
+    	 
+         WebElement postTitle = driver.findElement(By.name("postTitle"));
+         postTitle.sendKeys(data.get(0).get(1));
+         
+         WebElement description = driver.findElement(By.name("description"));
+         description.sendKeys(data.get(1).get(1));
+          
+         WebElement contentDesc = driver.findElement(By.xpath("//div[@class='ql-editor ql-blank']"));
+         contentDesc.sendKeys(data.get(2).get(1));
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,500)", "");
+              
+         String tags = data.get(3).get(1);
+         WebElement tagsInput = driver.findElement(By.id("autocomplete-tag"));
+         selectDropdownOption(tagsInput, tags);
+         
+         WebElement metaTitle = driver.findElement(By.name("metaTitle"));
+         metaTitle.sendKeys(data.get(4).get(1));
+         
+         JavascriptExecutor js1 = (JavascriptExecutor) driver;
+         js1.executeScript("window.scrollBy(0,300)", "");
+         
+         WebElement metaDescription = driver.findElement(By.name("metaDescription"));
+         metaDescription.sendKeys(data.get(5).get(1));
+         
+         String metaKeyword = data.get(6).get(1);
+         WebElement metaKeywordInput = driver.findElement(By.xpath("autocomplete-metaKeyword"));
+         selectDropdownOption(metaKeywordInput, metaKeyword);
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Create Post'])[1]")).click();               
+     }
+//     @Then("the blog should be created successfully")
+//     public void the_blog_should_be_created_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the Blog List")
+//     public void admin_fetches_the_blog_list() 
+//     {
+//         
+//     }
+
+
+//////////////////////////////////////// Product Management ////////////////////////////////////////////////////
+  
+     @Given("Admin navigatess a new Product List")
+     public void admin_navigates_a_new_product_list() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'PRODUCT MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'PRODUCT LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Product")).click();  
+    	      
+     }
+     
+     @When("Admin fills the product details form with the following details:")
+     public void admin_fills_the_product_details_form_with_the_following_details(DataTable dataTable) 
+     {
+    	 List<List<String>> data = dataTable.cells();
+    	 
+    	 WebElement chooseProductName = driver.findElement(By.name("productName"));
+    	 chooseProductName.sendKeys(data.get(0).get(1));
+         
+         WebElement productDescription = driver.findElement(By.name("productDescription"));
+         productDescription.sendKeys(data.get(1).get(1));
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Add New Product'])[1]")).click();   
+           
+     }
+//     @Then("the product should be created successfully")
+//     public void the_product_should_be_created_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the Product List")
+//     public void admin_fetches_the_product_list() 
+//     {
+//         
+//     }
+     
+     
+     
+     @Given("Admin navigates a new Product Mapping")
+     public void admin_navigates_a_new_product_mapping() 
+     { 
+    	 driver.findElement(By.xpath("//span[contains(text(),'PRODUCT MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'PRODUCT ROLE MAPPING LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("Mapping Roles")).click();  
+         
+     }
+     @When("Admin fills the product mapping form with the following details:")
+     public void admin_fills_the_product_mapping_form_with_the_following_details(DataTable dataTable) 
+     {
+         List<List<String>> data = dataTable.cells();
+    	 
+         String chooseProductName = data.get(0).get(1);
+         WebElement chooseProductNameInput = driver.findElement(By.id("autocomplete-productId"));
+         selectDropdownOption(chooseProductNameInput, chooseProductName);
+         
+         String usernameRole = data.get(1).get(1);
+         WebElement usernameRoleInput = driver.findElement(By.id("autocomplete-userRoleId"));
+         selectDropdownOption(usernameRoleInput, usernameRole);
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Modify Roles'])[1]")).click();   
+     }
+    	 
+//     @Then("the product mapping should be created successfully")
+//     public void the_product_mapping_should_be_created_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the Product Mapping")
+//     public void admin_fetches_the_product_mapping() 
+//     {
+//    	 
+//
+//
+//     }
+     
+     @Given("Admin navigates a new Product Modal List")
+     public void admin_navigates_a_new_product_modal_list() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'PRODUCT MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'PRODUCT MODAL LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Model")).click();  	 
+     }
+     @When("Admin fills the product modal form with the following details:")
+     public void admin_fills_the_product_modal_form_with_the_following_details(DataTable dataTable) throws AWTException, InterruptedException 
+     {
+
+         List<List<String>> data = dataTable.cells();
+    	 
+         WebElement modalTitle = driver.findElement(By.name("title"));
+         modalTitle.sendKeys(data.get(0).get(1));
+         
+         WebElement modalDescription = driver.findElement(By.name("description"));
+         modalDescription.sendKeys(data.get(1).get(1));
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,300)", "");
+         
+         driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+         StringSelection str = new StringSelection("C:\\Users\\rajso\\Desktop\\BJP.jpg");
+         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+         Robot rb = new Robot();
+      
+         Thread.sleep(1000); 
+
+         // Simulate pressing Ctrl+V to paste the file path
+            rb.keyPress(KeyEvent.VK_CONTROL);
+            rb.keyPress(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_CONTROL);
+
+         // Simulate pressing Enter to confirm the file selection
+            rb.keyPress(KeyEvent.VK_ENTER);
+            rb.keyRelease(KeyEvent.VK_ENTER); 
+            
+            
+            driver.findElement(By.xpath("(//button[normalize-space()='Create Model'])[1]")).click();
+               
+     
+//    	WebElement navBar = driver.findElement(By.xpath("//nav[@id='nav-section-vertical']"));
+//    	JavascriptExecutor js = (JavascriptExecutor) driver;
+//    	js.executeScript("window.scrollBy(0,250)", "");
+    	
+    	
+     }
+     
+//     @Then("the product modal should be created successfully")
+//     public void the_product_modal_should_be_created_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the Product Modal List")
+//     public void admin_fetches_the_product_modal_list() 
+//     {
+//    	 
+//     }
+//    
+     @Given("Admin navigates a new Product Feature List")
+     public void admin_navigates_a_new_product_feature_list() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'PRODUCT MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'PRODUCT FEATURE LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Work")).click();  	
+         
+     }
+     @When("Admin fills the product Feature form with the following details:")
+     public void admin_fills_the_product_feature_form_with_the_following_details(DataTable dataTable) throws AWTException, InterruptedException 
+     {
+         List<List<String>> data = dataTable.cells();
+    	 
+         WebElement featureTitle = driver.findElement(By.name("title"));
+         featureTitle.sendKeys(data.get(0).get(1));
+         
+         WebElement featureDescription = driver.findElement(By.name("description"));
+         featureDescription.sendKeys(data.get(1).get(1));
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,300)", "");
+         
+         driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+         StringSelection str = new StringSelection("C:\\Users\\rajso\\Desktop\\BJP.jpg");
+         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+         Robot rb = new Robot();
+      
+         Thread.sleep(1000); 
+
+         // Simulate pressing Ctrl+V to paste the file path
+            rb.keyPress(KeyEvent.VK_CONTROL);
+            rb.keyPress(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_V);
+            rb.keyRelease(KeyEvent.VK_CONTROL);
+
+         // Simulate pressing Enter to confirm the file selection
+            rb.keyPress(KeyEvent.VK_ENTER);
+            rb.keyRelease(KeyEvent.VK_ENTER); 
+            
+            
+            driver.findElement(By.xpath("(//button[normalize-space()='Create Work'])[1]")).click();
+               
+         
+     }
+//     @Then("the product features should be created successfully")
+//     public void the_product_features_should_be_created_successfully() 
+//     {
+//       
+//     }
+//     @Then("Admin fetches the Product Features List")
+//     public void admin_fetches_the_product_features_list() 
+//     {
+//    	 
+//         
+//     }
+
+     @Given("Admin gives a new Suggestion")
+     public void admin_gives_a_new_suggestion() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'PRODUCT MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'PRODUCT SUGGESTION BOX LIST DETAILS')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Suggestion")).click();  	
+         
+     }
+     @When("Admin fills the Suggestion form with the following details:")
+     public void admin_fills_the_suggestion_form_with_the_following_details(DataTable dataTable) 
+     {
+    	 
+         List<List<String>> data = dataTable.cells();
+    	 
+         WebElement featureTitle = driver.findElement(By.name("feedbackMessage"));
+         featureTitle.sendKeys(data.get(0).get(1));
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Create Work'])[1]")).click();   
+     }
+     
+//     @Then("the Suggestion should be submit successfully")
+//     public void the_suggestion_should_be_submit_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the Suggestion List")
+//     public void admin_fetches_the_suggestion_list() 
+//     {
+//         
+//     }
+     
+     @Given("Admin navigates to the Add Contact page")
+     public void admin_navigates_to_the_add_contact_page() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'PRODUCT MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'CONTACT DETAILS LIST')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Contact")).click();  	
+             
+     }
+     @When("Admin fills the contact details form with the following details:")
+     public void admin_fills_the_contact_details_form_with_the_following_details(DataTable dataTable) 
+     {
+         List<List<String>> data = dataTable.cells();
+    	 
+         WebElement contactName = driver.findElement(By.name("name"));
+         contactName.sendKeys(data.get(0).get(1));
+         
+         WebElement contactMobile = driver.findElement(By.name("mobile"));
+         contactMobile.sendKeys(data.get(1).get(1));
+         
+         WebElement contactEmail = driver.findElement(By.name("email"));
+         contactEmail.sendKeys(data.get(2).get(1));
+         
+         WebElement contactSubject = driver.findElement(By.name("subject"));
+         contactSubject.sendKeys(data.get(3).get(1));
+         
+         WebElement contactMesssage = driver.findElement(By.name("message"));
+         contactMesssage.sendKeys(data.get(4).get(1));
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Submit Now'])[1]")).click(); 
+    	 
+         
+     }
+//     @Then("the contact should be created successfully")
+//     public void the_contact_should_be_created_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the Contact List")
+//     public void admin_fetches_the_contact_list() 
+//     {
+//         
+//     }
+//     @Then("the contact list should contain the new contact {string}")
+//     public void the_contact_list_should_contain_the_new_contact(String string) 
+//     {
+//         
+//     }
+
+/////////////////////////////////// Emergency Services ////////////////////////////////////////////////////////     
+
+     @Given("Admin navigates to the Add Emergency Contact page")
+     public void admin_navigates_to_the_add_emergency_contact_page() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),' EMERGENCY SERVICES')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'EMERGENCY HELPLINE NUMBER')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("Add Emergency Contact")).click();
+         
+     }
+     @When("Admin fills the emergency contact details form with the following details:")
+     public void admin_fills_the_emergency_contact_details_form_with_the_following_details(DataTable dataTable) 
+     {
+    	 
+         List<List<String>> data = dataTable.cells();
+    	 
+         String selectDepartment = data.get(0).get(1);
+         WebElement selectDepartmentInput = driver.findElement(By.id("autocomplete-departmentName"));
+         selectDropdownOption(selectDepartmentInput, selectDepartment);
+         
+         WebElement contactName = driver.findElement(By.name("contactName"));
+         contactName.sendKeys(data.get(1).get(1));
+         
+         WebElement contactNumber = driver.findElement(By.name("phoneNumber"));
+         contactNumber.sendKeys(data.get(2).get(1));
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Create'])[1]")).click(); 
+         
+     }
+//     @Then("the emergency contact should be created successfully")
+//     public void the_emergency_contact_should_be_created_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the emergency contact list")
+//     public void admin_fetches_the_emergency_contact_list() 
+//     {
+//         
+//         
+//     }
+
+////////////////////////////////////Travel Management System ///////////////////////////////////////////////////
+    
+     @Given("Admin navigates to the Book Ambulance Feature")
+     public void admin_navigates_to_the_book_ambulance_feature() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'BOOK AMBULANCE')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         
+     }
+     
+     @When("Admin Select the location and Book Ambulance :")
+     public void admin_select_the_location_and_book_ambulance() throws InterruptedException 
+     {
+    	 Map<String, Object> cordinateMap = new HashMap<String, Object>();
+    	 cordinateMap.put("latitude",  26.12975);
+    	 cordinateMap.put("longitude", 85.37753);
+    	 cordinateMap.put("accuracy", 1);
+    	 
+    	 ((ChromeDriver)driver).executeCdpCommand("Emulation.setGeolocationOverride", cordinateMap);
+    	 
+    	 
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,500)", "");
+          
+         Thread.sleep(2000);
+
+
+     }
+//     @Then("the ambulance booking successfully")
+//     public void the_ambulance_booking_successfully() 
+//     {
+//         
+//     }
+//     @Then("Admin fetches the ambulance list")
+//     public void admin_fetches_the_ambulance_list() 
+//     {
+//         
+//     }   
+     
+  
+
+     
+     
 
 
 
+     
      
   }  
     
