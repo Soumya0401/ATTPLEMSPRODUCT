@@ -346,8 +346,8 @@ Feature: ATTPL EMS Services
      Scenario: Admin Books a Ambulance
     Given Admin navigates to the Book Ambulance Feature
     When Admin Select the location and Book Ambulance :
-    #Then the ambulance booking successfully
-    #And Admin fetches the ambulance list
+    Then the ambulance booking successfully
+    And Admin fetches the ambulance list
     
 
   
