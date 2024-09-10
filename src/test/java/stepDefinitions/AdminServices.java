@@ -38,13 +38,14 @@ public class AdminServices {
     @Given("Admin is on the ATTPL EMS Landing Page")
     public void admin_is_on_the_attpl_ems_landing_page() 
     {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-notifications");
+    	ChromeOptions options = new ChromeOptions();
+    	options.addArguments("--disable-notifications");
         driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-        driver.navigate().to("https://app.attplems.com/");
-       //driver.navigate().to("https://appdev.attplems.com/");
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);      
+    	driver.manage().window().maximize();
+    	driver.get("https://app.attplems.com/");
+    	// driver.get("https://appdev.attplems.com/"); 
+    	driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
     }
     
     @When("Admin logs in with the registered mobile number and password")
@@ -824,6 +825,432 @@ public class AdminServices {
             driver.findElement(By.xpath("//button[normalize-space()='Upload']")).click();  	 
      }
      
+////////////////////////////////////Travel Management System ///////////////////////////////////////////////////
+     
+//@Given("Admin navigates to the Book Ambulance Feature")
+//public void admin_navigates_to_the_book_ambulance_feature() 
+//{
+//driver.findElement(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")).click();
+//driver.findElement(By.xpath("//span[contains(text(),'BOOK AMBULANCE')]")).click();
+//driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+//
+//}
+//
+//@When("Admin Select the location and Book Ambulance :")
+//public void admin_select_the_location_and_book_ambulance() throws InterruptedException 
+//{
+//Map<String, Object> coordinates = new HashMap<>();
+//coordinates.put("latitude", 26.12975);
+//coordinates.put("longitude", 85.37753);
+//coordinates.put("accuracy", 1);
+//
+//((ChromeDriver)driver).executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
+//
+//Thread.sleep(2000);
+//
+//JavascriptExecutor js = (JavascriptExecutor) driver;
+//js.executeScript("window.scrollBy(0,500)", "");
+//
+//driver.findElement(By.xpath("(//button[normalize-space()='Book Ambulance'])[1]")).click();
+//
+//}
+//@Then("the ambulance booking successfully")
+//public void the_ambulance_booking_successfully() 
+//{
+//
+//}
+//@Then("Admin fetches the ambulance list")
+//public void admin_fetches_the_ambulance_list() 
+//{
+//
+//} 
+
+
+@Given("Admin registers a new driver")
+public void admin_registers_a_new_driver() 
+{
+driver.findElement(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")).click();
+driver.findElement(By.xpath("//span[contains(text(),'DRIVER LIST DETAILS')]")).click();
+driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+driver.findElement(By.linkText("New Driver")).click();     
+}
+
+@When("Admin fills the driver registration form with the following data:")
+public void admin_fills_the_driver_registration_form_with_the_following_data(DataTable dataTable) throws AWTException, InterruptedException 
+{
+List<List<String>> data = dataTable.cells();
+
+String wardName = data.get(0).get(1);
+WebElement wardNameInput = driver.findElement(By.id("autocomplete-wardId"));
+selectDropdownOption(wardNameInput,wardName);
+
+String BoothName = data.get(1).get(1);
+WebElement BoothNameInput = driver.findElement(By.id("autocomplete-boothId"));
+selectDropdownOption(BoothNameInput,BoothName);
+
+String userName = data.get(2).get(1);
+WebElement userNameInput = driver.findElement(By.id("autocomplete-userId"));
+selectDropdownOption(userNameInput,userName);
+
+WebElement phoneName = driver.findElement(By.name("phone"));
+phoneName.sendKeys(data.get(3).get(1));
+
+WebElement driverEmail = driver.findElement(By.name("email"));
+driverEmail.sendKeys(data.get(4).get(1));
+
+WebElement driverAddress = driver.findElement(By.name("address"));
+driverAddress.sendKeys(data.get(5).get(1));
+
+WebElement licenseNumber = driver.findElement(By.name("licenseNumber"));
+licenseNumber.sendKeys(data.get(6).get(1));
+
+String licenseExp = data.get(7).get(1);
+WebElement licenseExpInput = driver.findElement(By.name("licenseExpirationDate"));
+selectDropdownOption(licenseExpInput,licenseExp);
+
+JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("window.scrollBy(0,500)", "");
+
+String paymentMethod = data.get(8).get(1);
+WebElement paymentMethodInput = driver.findElement(By.id("autocomplete-paymentMethod"));
+selectDropdownOption(paymentMethodInput,paymentMethod);
+
+String vehicleName = data.get(9).get(1);
+WebElement vehicleNameInput = driver.findElement(By.id("autocomplete-vehicleId"));
+selectDropdownOption(vehicleNameInput,vehicleName);
+
+driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+StringSelection str = new StringSelection("C:\\Users\\rajso\\Desktop\\BJP.jpg");
+Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+Robot rb = new Robot();
+
+Thread.sleep(1000); 
+
+// Simulate pressing Ctrl+V to paste the file path
+rb.keyPress(KeyEvent.VK_CONTROL);
+rb.keyPress(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_CONTROL);
+
+// Simulate pressing Enter to confirm the file selection
+rb.keyPress(KeyEvent.VK_ENTER);
+rb.keyRelease(KeyEvent.VK_ENTER); 
+
+
+
+driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+StringSelection str1 = new StringSelection("C:\\Users\\rajso\\Desktop\\download.jpg");
+Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+Robot rb1 = new Robot();
+
+Thread.sleep(1000); 
+
+// Simulate pressing Ctrl+V to paste the file path
+rb.keyPress(KeyEvent.VK_CONTROL);
+rb.keyPress(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_CONTROL);
+
+// Simulate pressing Enter to confirm the file selection
+rb.keyPress(KeyEvent.VK_ENTER);
+rb.keyRelease(KeyEvent.VK_ENTER); 
+
+
+driver.findElement(By.xpath("(//button[normalize-space()='Create Driver'])[1]")).click();   
+}
+
+//@Then("the driver registration should be created successfully")
+//public void the_driver_registration_should_be_created_successfully() 
+//{
+//
+//}
+//@Then("Admin fetches the driver list")
+//public void admin_fetches_the_driver_list() 
+//{
+//
+//}
+
+@Given("Admin registers a new vehicle")
+public void admin_registers_a_new_vehicle() 
+{
+driver.findElement(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")).click();
+driver.findElement(By.xpath("//span[contains(text(),'VEHICLE LIST DETAILS')]")).click();
+driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+driver.findElement(By.linkText("New Vehicle")).click();     
+}
+
+@When("Admin fills the vehicle registration form with the following data:")
+public void admin_fills_the_vehicle_registration_form_with_the_following_data(DataTable dataTable) throws AWTException, InterruptedException 
+{
+List<List<String>> data = dataTable.cells();
+
+WebElement vehicleName = driver.findElement(By.name("vehicleName"));
+vehicleName.sendKeys(data.get(0).get(1));
+
+WebElement modelName = driver.findElement(By.name("model"));
+modelName.sendKeys(data.get(1).get(1));
+
+WebElement year = driver.findElement(By.name("year"));
+year.sendKeys(data.get(2).get(1));
+
+
+WebElement chassisNumber = driver.findElement(By.name("chassisNumber"));
+chassisNumber.sendKeys(data.get(3).get(1));
+
+
+String vehicleType = data.get(4).get(1);
+WebElement vehicleTypeInput = driver.findElement(By.id("autocomplete-vehicleType"));
+selectDropdownOption(vehicleTypeInput,vehicleType);
+
+WebElement color = driver.findElement(By.name("color"));
+color.sendKeys(data.get(5).get(1));
+
+WebElement manufacturingYear = driver.findElement(By.name("manufacturingYear"));
+manufacturingYear.sendKeys(data.get(6).get(1));
+
+WebElement engineNumber = driver.findElement(By.name("engineNumber"));
+engineNumber.sendKeys(data.get(7).get(1));
+
+WebElement fuelType = driver.findElement(By.name("fuelType"));
+fuelType.sendKeys(data.get(8).get(1));
+
+WebElement grossVehicleWeight = driver.findElement(By.name("grossVehicleWeight"));
+grossVehicleWeight.sendKeys(data.get(9).get(1));
+
+WebElement registrationNumber = driver.findElement(By.name("registrationNumber"));
+registrationNumber.sendKeys(data.get(10).get(1));
+
+WebElement maintenanceHistory = driver.findElement(By.name("maintenanceHistory"));
+maintenanceHistory.sendKeys(data.get(11).get(1));
+
+JavascriptExecutor js = (JavascriptExecutor) driver;
+js.executeScript("window.scrollBy(0,500)", "");
+
+WebElement vehicleCondition = driver.findElement(By.name("vehicleCondition"));
+vehicleCondition.sendKeys(data.get(12).get(1));
+
+String insuranceExpiryDate = data.get(13).get(1);
+WebElement insuranceExpiryDateInput = driver.findElement(By.name("insuranceExpiryDate"));
+selectDropdownOption(insuranceExpiryDateInput,insuranceExpiryDate);
+
+WebElement gpsTracking = driver.findElement(By.name("gpsTracking"));
+gpsTracking.sendKeys(data.get(14).get(1));
+
+WebElement availability = driver.findElement(By.name("availability"));
+availability.sendKeys(data.get(15).get(1));
+
+WebElement additionalEquipment = driver.findElement(By.name("additionalEquipment"));
+additionalEquipment.sendKeys(data.get(15).get(1));
+
+JavascriptExecutor js1 = (JavascriptExecutor) driver;
+js1.executeScript("window.scrollBy(0,500)", "");
+
+//Vehicle Image
+driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+StringSelection str = new StringSelection("C:\\Users\\rajso\\Desktop\\download.jpg");
+Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+Robot rb = new Robot();
+
+Thread.sleep(1000); 
+
+// Simulate pressing Ctrl+V to paste the file path
+rb.keyPress(KeyEvent.VK_CONTROL);
+rb.keyPress(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_CONTROL);
+
+// Simulate pressing Enter to confirm the file selection
+rb.keyPress(KeyEvent.VK_ENTER);
+rb.keyRelease(KeyEvent.VK_ENTER); 
+
+
+//Insurance PDF
+driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+StringSelection str1 = new StringSelection("C:\\Users\\rajso\\Desktop\\download.jpg");
+Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+Robot rb1 = new Robot();
+
+Thread.sleep(1000); 
+
+// Simulate pressing Ctrl+V to paste the file path
+rb.keyPress(KeyEvent.VK_CONTROL);
+rb.keyPress(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_CONTROL);
+
+// Simulate pressing Enter to confirm the file selection
+rb.keyPress(KeyEvent.VK_ENTER);
+rb.keyRelease(KeyEvent.VK_ENTER); 
+
+
+
+//RC PDF
+driver.findElement(By.xpath("//span[contains(text(),'browse')]")).click();
+
+StringSelection str2 = new StringSelection("C:\\Users\\rajso\\Desktop\\BJP.jpg");
+Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
+
+Robot rb2 = new Robot();
+
+Thread.sleep(1000); 
+
+// Simulate pressing Ctrl+V to paste the file path
+rb.keyPress(KeyEvent.VK_CONTROL);
+rb.keyPress(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_V);
+rb.keyRelease(KeyEvent.VK_CONTROL);
+
+// Simulate pressing Enter to confirm the file selection
+rb.keyPress(KeyEvent.VK_ENTER);
+rb.keyRelease(KeyEvent.VK_ENTER); 
+
+driver.findElement(By.xpath("(//button[normalize-space()='Create Vehicle'])[1]")).click(); 
+} 
+
+
+@Given("Admin navigates to the Vehicle Booking page for Cab Services")
+public void admin_navigates_to_the_vehicle_booking_page_for_cab_services() 
+{
+driver.findElement(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")).click();
+driver.findElement(By.xpath("//span[contains(text(),'VEHICLE BOOKING OPTIONS')]")).click();
+driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+driver.findElement(By.linkText("Vehicle Booking Option")).click();   
+
+}
+
+@When("Admin fills the Cab Charges form with the following details:")
+public void admin_fills_the_cab_charges_form_with_the_following_details(DataTable dataTable) 
+{
+List<List<String>> data = dataTable.cells();
+
+String vehicleOption = data.get(0).get(1);
+WebElement vehicleOptionInput = driver.findElement(By.id("autocomplete-vehicleOptionFor"));
+selectDropdownOption(vehicleOptionInput,vehicleOption);
+
+String vehicleType = data.get(1).get(1);
+WebElement vehicleTypeInput = driver.findElement(By.id("autocomplete-vehicleType"));
+selectDropdownOption(vehicleTypeInput,vehicleType);
+
+WebElement rentPerKm = driver.findElement(By.name("rentPerKm"));
+rentPerKm.sendKeys(data.get(2).get(1));
+
+WebElement baseCharge = driver.findElement(By.name("baseCharge"));
+baseCharge.sendKeys(data.get(3).get(1));
+
+
+String seatingCapacity = data.get(4).get(1);
+WebElement seatingCapacityInput = driver.findElement(By.id("autocomplete-seatingCapacity"));
+selectDropdownOption(seatingCapacityInput,seatingCapacity);
+
+driver.findElement(By.xpath("(//button[normalize-space()='Create'])[1]")).click();
+
+}
+//@Then("the vehicle details should be submitted successfully")
+//public void the_vehicle_details_should_be_submitted_successfully() 
+//{
+//
+//}
+
+@Given("Admin navigates to the Vehicle Booking page for Delivery Service")
+public void admin_navigates_to_the_vehicle_booking_page_for_delivery_service() 
+{
+
+driver.findElement(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")).click();
+driver.findElement(By.xpath("//span[contains(text(),'VEHICLE BOOKING OPTIONS')]")).click();
+driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+driver.findElement(By.linkText("Vehicle Booking Option")).click();
+
+}
+@When("Admin fills the Delivery Service Charges form with the following details:")
+public void admin_fills_the_delivery_service_charges_form_with_the_following_details(DataTable dataTable) 
+{
+List<List<String>> data = dataTable.cells();
+
+String vehicleOption = data.get(0).get(1);
+WebElement vehicleOptionInput = driver.findElement(By.id("autocomplete-vehicleOptionFor"));
+selectDropdownOption(vehicleOptionInput,vehicleOption);
+
+String vehicleType = data.get(1).get(1);
+WebElement vehicleTypeInput = driver.findElement(By.id("autocomplete-vehicleType"));
+selectDropdownOption(vehicleTypeInput,vehicleType);
+
+WebElement rentPerKm = driver.findElement(By.name("rentPerKm"));
+rentPerKm.sendKeys(data.get(2).get(1));
+
+WebElement baseCharge = driver.findElement(By.name("baseCharge"));
+baseCharge.sendKeys(data.get(3).get(1));
+
+String weightCapacity = data.get(4).get(1);
+WebElement weightCapacityInput = driver.findElement(By.id("autocomplete-weightCapacity"));
+selectDropdownOption(weightCapacityInput,weightCapacity);
+
+driver.findElement(By.xpath("(//button[normalize-space()='Create'])[1]")).click();
+
+}
+
+//@Then("the delivery vehicle details should be submitted successfully")
+//public void the_delivery_vehicle_details_should_be_submitted_successfully() 
+//{
+//
+//
+//}
+
+
+@Given("Admin schedules a trip for voters to cast their vote")
+public void admin_schedules_a_trip_for_voters_to_cast_their_vote() 
+{
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+WebElement electionManagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")));
+electionManagement.click();
+
+WebElement surveyManagement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'TRIP MANAGEMENT')]")));
+surveyManagement.click();
+
+WebElement surveyListDetails = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'REQUESTED TRIP LIST DETAILS')]")));
+surveyListDetails.click();
+
+WebElement newSurveyButton = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("New Trip")));
+newSurveyButton.click();
+
+}
+@When("Admin fills the trip details form with the following information:")
+public void admin_fills_the_trip_details_form_with_the_following_information(DataTable dataTable) 
+{
+
+List<List<String>> data = dataTable.cells();
+
+WebElement tripSource = driver.findElement(By.name("tripSource"));
+tripSource.sendKeys(data.get(0).get(1));
+
+WebElement tripDestination = driver.findElement(By.name("tripDestination"));
+tripDestination.sendKeys(data.get(1).get(1));
+
+String travellingMembers = data.get(2).get(1);
+WebElement travellingMembersInput = driver.findElement(By.id("autocomplete-travellingMembers"));
+selectDropdownOption(travellingMembersInput,travellingMembers);
+
+WebElement tripDetails = driver.findElement(By.name("tripDetails"));
+tripDetails.sendKeys(data.get(3).get(1));
+
+driver.findElement(By.xpath("(//button[normalize-space()='Create Trip'])[1]")).click();	 
+}
+
+//@Then("the trip details should be submitted successfully")
+//public void the_trip_details_should_be_submitted_successfully() 
+//{
+//
+//}
+   
+     
 /////////////////////////////////////////// Expense Management System ////////////////////////////////////////////////////////////////
          
      @Given("Admin Create a expense category list")
@@ -1501,47 +1928,158 @@ public class AdminServices {
 //         
 //         
 //     }
-
-////////////////////////////////////Travel Management System ///////////////////////////////////////////////////
-    
-     @Given("Admin navigates to the Book Ambulance Feature")
+     
+     @Given("Admin navigates to the Book Ambulance feature")
      public void admin_navigates_to_the_book_ambulance_feature() 
      {
-    	 driver.findElement(By.xpath("//span[contains(text(),'TRANSPORT MANAGEMENT')]")).click();
+    	 driver.findElement(By.xpath("//span[contains(text(),'EMERGENCY SERVICES')]")).click();
          driver.findElement(By.xpath("//span[contains(text(),'BOOK AMBULANCE')]")).click();
          driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-         
+
      }
-     
-     @When("Admin Select the location and Book Ambulance :")
+     @When("Admin selects the location and books an ambulance")
      public void admin_select_the_location_and_book_ambulance() throws InterruptedException 
      {
-    	 Map<String, Object> cordinateMap = new HashMap<String, Object>();
-    	 cordinateMap.put("latitude",  26.12975);
-    	 cordinateMap.put("longitude", 85.37753);
-    	 cordinateMap.put("accuracy", 1);
-    	 
-    	 ((ChromeDriver)driver).executeCdpCommand("Emulation.setGeolocationOverride", cordinateMap);
-    	 
-    	 
-         JavascriptExecutor js = (JavascriptExecutor) driver;
-         js.executeScript("window.scrollBy(0,500)", "");
-          
-         Thread.sleep(2000);
+        Map<String, Object> coordinates = new HashMap<>();
+        coordinates.put("latitude", 26.12975);
+        coordinates.put("longitude", 85.37753);
+        coordinates.put("accuracy", 1);
 
+        ((ChromeDriver)driver).executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
+
+        Thread.sleep(2000);
+
+       JavascriptExecutor js = (JavascriptExecutor) driver;
+       js.executeScript("window.scrollBy(0,500)", "");
+
+       driver.findElement(By.xpath("(//button[normalize-space()='Book Ambulance'])[1]")).click();
 
      }
-//     @Then("the ambulance booking successfully")
-//     public void the_ambulance_booking_successfully() 
-//     {
-//         
-//     }
-//     @Then("Admin fetches the ambulance list")
-//     public void admin_fetches_the_ambulance_list() 
-//     {
-//         
-//     }   
+     
+     @Then("Admin fetches the ambulance list details")
+     public void admin_fetches_the_ambulance_list_details() throws InterruptedException 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),'EMERGENCY SERVICES')]")).click();
+         driver.findElement(By.xpath("//span[contains(text(),'AMBULANCE LIST')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS); 
          
+         Thread.sleep(2000);
+
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,500)", "");
+
+     }
+     
+//////////////////////////////////////////// Labour Job Portal /////////////////////////////////////////////////////     
+
+     @Given("Admin navigates to the Labour Job Portal page")
+     public void admin_navigates_to_the_labour_job_portal_page() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),' LABOUR JOB PORTAL')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("New Job Post")).click();
+
+     }
+     
+     @When("Admin fills the labour job form with the following details:")
+     public void admin_fills_the_labour_job_form_with_the_following_details(DataTable dataTable) 
+     {
+        List<List<String>> data = dataTable.cells();
+    	 
+         String jobType = data.get(0).get(1);
+         WebElement jobTypeInput = driver.findElement(By.id("autocomplete-jobType"));
+         selectDropdownOption(jobTypeInput, jobType);
+         
+         String jobTitle = data.get(1).get(1);
+         WebElement jobTitleInput = driver.findElement(By.id("autocomplete-jobTitle"));
+         selectDropdownOption(jobTitleInput, jobTitle);
+         
+         
+         WebElement companyName = driver.findElement(By.name("companyName"));
+         companyName.sendKeys(data.get(2).get(1));
+         
+         WebElement Address = driver.findElement(By.name("location"));
+         Address.sendKeys(data.get(3).get(1));
+         
+         JavascriptExecutor js = (JavascriptExecutor) driver;
+         js.executeScript("window.scrollBy(0,500)", "");
+         
+         WebElement jobLocation = driver.findElement(By.xpath("(//button[normalize-space()='Choose On Map'])[1]"));
+         jobLocation.click();
+         
+         Map<String, Object> coordinates = new HashMap<>();
+         coordinates.put("latitude", 12.97252);
+         coordinates.put("longitude", 77.74171);
+         coordinates.put("accuracy", 1);
+
+         ((ChromeDriver)driver).executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
+         
+         driver.findElement(By.xpath("//button[normalize-space()='Confirm']")).click();   
+     }
+     
+//     @Then("the job posting should be created successfully")
+//     public void the_job_posting_should_be_created_successfully() 
+//     {
+//
+//
+//     }
+//     @Then("Admin fetches the job postings list")
+//     public void admin_fetches_the_job_postings_list() 
+//     {
+//    	 
+//
+//
+//     }
+
+
+/////////////////////////////////////// Project Managememt /////////////////////////////////////////////////////
+     
+     @Given("Admin navigates to the Project Management page")
+     public void admin_navigates_to_the_project_management_page() 
+     {
+    	 driver.findElement(By.xpath("//span[contains(text(),' PROJECT MANAGEMENT')]")).click();
+         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+         driver.findElement(By.linkText("Create Project")).click();  
+     }
+     @When("Admin fills the Project Management form with the following details:")
+     public void admin_fills_the_project_management_form_with_the_following_details(DataTable dataTable) 
+     {
+        List<List<String>> data = dataTable.cells();
+    	 
+         WebElement projectTitle = driver.findElement(By.name("name"));
+         projectTitle.sendKeys(data.get(0).get(1));
+         
+         WebElement projectDescription = driver.findElement(By.name("description"));
+         projectDescription.sendKeys(data.get(1).get(1));
+         
+         String Types = data.get(2).get(1);
+         WebElement TypesInput = driver.findElement(By.id("autocomplete-types"));
+         selectDropdownOption(TypesInput, Types);
+         
+         String Columns = data.get(3).get(1);
+         WebElement ColumnsInput = driver.findElement(By.id("autocomplete-columns"));
+         selectDropdownOption(ColumnsInput, Columns);
+         
+         driver.findElement(By.xpath("(//button[normalize-space()='Create'])[1]")).click();
+         
+     }
+//     @Then("the project should be created successfully")
+//     public void the_project_should_be_created_successfully() 
+//     {
+//
+//
+//     }
+//     @Then("Admin fetches the project list")
+//     public void admin_fetches_the_project_list()
+//     {
+//         
+//     } 
+
+
+     				
+     
+     
+     
      
   }  
     

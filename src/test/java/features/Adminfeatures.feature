@@ -192,7 +192,92 @@ Feature: ATTPL EMS Services
    
     Scenario: Admin upload the template
     Given Admin upload the new Template
+ 
+################################################################## TMS #############################################################################################   
     
+   #Scenario: Admin Books a Ambulance
+    #Given Admin navigates to the Book Ambulance Feature
+    #When Admin Select the location and Book Ambulance :
+    #Then the ambulance booking successfully
+    #And Admin fetches the ambulance list
+
+ 
+ Scenario: Admin registers a vehicle for election
+    Given Admin registers a new vehicle
+    When Admin fills the vehicle registration form with the following data:
+        | Vehicle Name             | Swift Desire                   |
+        | Model                    | MOH54322                       |
+        | Year                     | 2011                           |
+        | Chassis Number           | CGTR4326                       |
+        | Vehicle Type             | SUV                            |
+        | Colour                   | Blue                           |
+        | Manufacturing Year       | 2010                           |
+        | Engine Number            | HYTRG3456                      |
+        | Fuel Type                | Petrol                         |
+        | Gross Vehicle Weight     | 500 kg                         |
+        | Registration Number      | RET655430909                   |
+        | Maintenance History      | Regularly Serviced             |
+        | Vehicle Condition        | Good                           |
+        | Insurance Expiry Date    | 27-09-2024                     |
+        | GPS Tracking             | Yes                            |
+        | Availability             | Yes                            |
+        | Additional Equipment     | SunRoof                        |
+    Then the vehicle registration should be created successfully
+    And Admin fetches the vehicle list
+
+   
+    Scenario: Admin registers a driver for election
+    Given Admin registers a new driver
+    When Admin fills the driver registration form with the following data:
+        | Ward Name                | Jaipur                         |
+        | Booth Name               | Chartered Accountant Client    |
+        | User Name                | Sanket Pise                    |
+        | Phone Number             | 7766112200                     |
+        | Email                    | sanketpise@driver.com          |
+        | Address                  | Mumbai                         |
+        | License Number           | KJHY6545                       |
+        | License Issuing State    | UPI                            |
+        | Vehicle Name             | SUV                            |
+        
+   # Then the driver registration should be created successfully
+   # And Admin fetches the driver list
+
+
+ Scenario: Admin enters vehicle details for Cab Services
+    Given Admin navigates to the Vehicle Booking page for Cab Services
+    When Admin fills the Cab Charges form with the following details:
+        | Vehicle Option    | Cab Service     |
+        | Vehicle Type      | Sedan Prime     |
+        | Rent Per KM       | 150             |
+        | Base Charge       | 2309            |
+        | Weight Capacity   | 5678            |
+        | Seating Capacity  | 5               |
+    Then the vehicle details should be submitted successfully
+    
+    
+    Scenario: Admin enters vehicle details for Delivery Service
+    Given Admin navigates to the Vehicle Booking page for Delivery Service
+    When Admin fills the Delivery Service Charges form with the following details:
+        | Vehicle Option    | Delivery Service     |
+        | Vehicle Type      | Pickup               |
+        | Rent Per KM       | 150                  |
+        | Base Charge       | 2309                 |
+        | Weight Capacity   | 100 kg               |
+        
+    #Then the delivery vehicle details should be submitted successfully
+    
+    	
+ Scenario: Admin schedules a trip for voters
+    Given Admin schedules a trip for voters to cast their vote
+    When Admin fills the trip details form with the following information:
+        | Trip Source   | City A                                 |
+        | Destination   | City B                                 |
+        | Voters        | Soumya Choudhary, Pankaj Saini         |
+        | Trip Details  | Trip scheduled for voters successfully |
+    #Then the trip details should be submitted successfully
+
+  
+########################################################## ExpenseMS ##############################################################################################        
    
     Scenario: Admin Create Expense category 
     Given Admin Create a expense category list
@@ -215,7 +300,9 @@ Feature: ATTPL EMS Services
     
     #Then Admin see the Cliam List
     
-    
+############################################################################## UMS #################################################################################  
+   
+   
     Scenario: Admin creates a new user role
     Given The Admin is on the Create Role page
     When  The Admin fills in the create role form with the following data:
@@ -224,7 +311,7 @@ Feature: ATTPL EMS Services
       | Add Role Type       | LawyerAssistance  |
     #Then the Admin should see the updated Role List
     
-    
+      
    Scenario: Admin registers a new member
    Given Admin registers a new member
    When Admin fills the member registration form with the dataTable:
@@ -247,7 +334,8 @@ Feature: ATTPL EMS Services
    #Then the menber registration should be created successfully
    #Then Admin Fetch the Member List
    
-   
+
+######################################################### Support Ticket ############################################################################################# 
   
   Scenario: Admin Create a Support Ticket
     Given Admin creates a new Support Ticket
@@ -262,6 +350,7 @@ Feature: ATTPL EMS Services
     #Then the ticket should be created successfully
     #And Admin fetches the Ticket List
  
+############################################################### BL0G Service #######################################################################################
  
   Scenario: Admin creates a Blog
     Given Admin creates a new Blog
@@ -277,6 +366,8 @@ Feature: ATTPL EMS Services
     #Then the blog should be created successfully
     #And Admin fetches the Blog List
     
+    
+###################################################################### Product Management ##########################################################################    
    
   Scenario: Admin creates a Product List
     Given Admin navigates a new Product List
@@ -330,8 +421,11 @@ Feature: ATTPL EMS Services
       | Message       | ATTPLEMS is the best app for Political Party  |
     Then the contact should be created successfully
     And Admin fetches the Contact List
-   
     
+    
+############################################################### Emergency Services ##################################################################################
+    
+ 
   Scenario: Admin adds a new emergency helpline number
     Given Admin navigates to the Add Emergency Contact page
     When Admin fills the emergency contact details form with the following details:
@@ -342,17 +436,51 @@ Feature: ATTPL EMS Services
     Then the emergency contact should be created successfully
     And Admin fetches the emergency contact list
     
-     @MobileTest
-     Scenario: Admin Books a Ambulance
-    Given Admin navigates to the Book Ambulance Feature
-    When Admin Select the location and Book Ambulance :
-    Then the ambulance booking successfully
-    And Admin fetches the ambulance list
+    
+    
+ Scenario: Admin books an ambulance
+    Given Admin navigates to the Book Ambulance feature
+    When Admin selects the location and books an ambulance
+    Then Admin fetches the ambulance list details
     
 
+#################################################################### Labour JOB Post ###############################################################################
+
+
+ Scenario: Admin posts a job for labour
+    Given Admin navigates to the Labour Job Portal page
+    When Admin fills the labour job form with the following details:
+        | Job Category         | Construction worker                                             |
+        | Job Title            | Abhay Singh                                                     |
+        | Company Name         | ATTPL                                                           |
+        | Address              | Jaipur                                                          |
+        | Job Location         | Choose On Map                                                   |
+        | Employment Type      | Full Time                                                       |
+        | Salary               | 45000                                                           |
+        | Work Description     | Work on ATTPL Construction Site                                 |
+        | Job Requirement      | Need 3+ years of experience, knowledge of constructing mixtures |
+        | Job Responsibilities | Must have team handling capacity, able to work night shifts     |
+        | Job Benefits         | Health Insurance                                                |
+        | Apply Process        | 9988772211                                                      |
+        | Application Deadline | 09/20/2024                                                      |
+        | Job Status           | Open                                                            |
+    #Then the job posting should be created successfully
+    #And Admin fetches the job postings list
+   
+
+#################################################################### Project Management #####################################################################################
+
   
-    
-    
+ Scenario: Admin creates a project
+    Given Admin navigates to the Project Management page
+    When Admin fills the Project Management form with the following details:
+        | Project Title        | Onboarding Portal                              |
+        | Project Description  | To develop an Employee Onboarding portal       |
+        | Type                 | Task                                           |
+        | Column               | Active                                         |
+    Then the project should be created successfully
+    And Admin fetches the project list
+ 
     
     
     
