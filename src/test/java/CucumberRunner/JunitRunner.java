@@ -9,7 +9,8 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
   features = {
 		            
-    	            "src/test/java/features/Adminfeatures.feature"
+    	            "src/test/java/features/Adminfeatures.feature",
+    	            //"src/test/java/features/Candidatefeatures.feature"
     	        },
     	        dryRun = false,
     	        glue = "stepDefinitions",

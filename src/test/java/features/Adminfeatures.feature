@@ -1,5 +1,5 @@
-Feature: ATTPL EMS Services
-  As a user, I want to ensure that the Admin Page login works correctly.
+Feature: ATTPL EMS Admin Services
+  As a Admin, I want to ensure that the Admin Page Features work correctly.
 
   #Election Management 
  
@@ -26,19 +26,21 @@ Feature: ATTPL EMS Services
     | Election Conduct Description  | Election Conducted in a Peaceful Manner  |
     | Election Title                | MP Election                              |
     
-  And Admin clicks on the Create Election button
-  #Then Admin should see the Election List
+  Then Election should be successfully created
+  
   
   #Party Alliance Managememt
   
-  @SmokeTest
+  
   Scenario: Admin Creates Party Alliance 
-  Given Admin creates a new party alliance
-  #Then the Party Alliance should be created successfully
+  Given Admin navigate the party alliance page
+  When  Admin fills the create party alliance form with the dataTable:
+   | Party Alliance               | RSVP                        |
+  Then the Party Alliance should be created successfully
   
   #Party Management
   
-  @RegressionTest
+
   Scenario: Admin Creates Party  
   
   Given Admin creates a new party 
@@ -52,21 +54,20 @@ Feature: ATTPL EMS Services
     | Party Membership Count        | 200                                      |
     | Party Mainfesto               | To do best for country and people        |
     
-    #Then the party should be created successfully
+    Then the party should be created successfully
     
     
     #Candidate Management
     
-  
    Scenario: Admin Register Candidate for Election
 
   Given Admin registers a new candidate
   When Admin fills the register candidate form with the dataTable:
 
-    | Choose your Product           | EMS                      |
-    | Current your Role             | Candidate                |
-    | Mobile Number                 | 7733221198               |
-    | First Name                    | Rana                     |
+    | Choose your Product           | TMS                      |
+    | Current your Role             | Driver                    |
+    | Mobile Number                 | 9872341356               |
+    | First Name                    | Chirag                   |
     | Last Name                     | Singh                    |
     | Father                        | Father                   |
     | Ward Number                   | 45                       |
@@ -78,10 +79,9 @@ Feature: ATTPL EMS Services
     | Password                      | Apple@123                |
     | Confirm Password              | Apple@123                |
     
-    #Then the candidate should be created successfully
+    Then the candidate should be created successfully
     
     
-   
     Scenario: Admin Nominate Candidate for Election
     
     Given Admin nominate a new candidate
@@ -92,7 +92,7 @@ Feature: ATTPL EMS Services
     | Chose Party                   |Janata Dal (United) (JDU)        |
     | Legal Case                    | 1                               |
     
-    #Then the candidate should be created successfully
+    Then the candidate should be nominated successfully
     
     #Ward Management
     
@@ -116,7 +116,7 @@ Feature: ATTPL EMS Services
     | Incident Reporting            | call +91                           |
     | Security Measure              | Provide security feature to voters |
 
-   #Then the ward should be created successfully
+   Then the ward should be created successfully
    
  
    Scenario: Admin Creates Booth
@@ -135,7 +135,7 @@ Feature: ATTPL EMS Services
     | Ward Name                     | Muzaffarpur               |
    
 
-   #Then the booth should be created successfully
+   Then the booth should be created successfully
    
    Scenario: Admin Creates Polling Station
 
@@ -147,7 +147,7 @@ Feature: ATTPL EMS Services
     | Polling Station Capacity      | 2000                      |
     | Number of Booth               | 10                        |
    
-   #Then the polling station should be created successfully
+   Then the polling station should be created successfully
    
    
    Scenario: Admin registers voter
@@ -169,7 +169,7 @@ Feature: ATTPL EMS Services
     | Password                      | Apple@123                      |
     | Confirm Password              | Apple@123                      |
     
-   #Then the voter registration should be created successfully
+   Then the voter registration should be created successfully
    #Then Admin Fetch the Voter List
    
   
@@ -184,6 +184,8 @@ Feature: ATTPL EMS Services
     | Select Users        | Dinesh Kumar, Kana Ram                                                    |
     | Set duration        | Survey Start - 08/30/2024, 12:00 AM; Survey End - 08/31/2024, 12:00 PM    |
     | Survey Status       | Open                                                                      |
+    
+    Then the survey should be created sucessfully
     
    
     Scenario: Admin see the survey response lists
@@ -223,7 +225,7 @@ Feature: ATTPL EMS Services
         | Availability             | Yes                            |
         | Additional Equipment     | SunRoof                        |
     Then the vehicle registration should be created successfully
-    And Admin fetches the vehicle list
+    #And Admin fetches the vehicle list
 
    
     Scenario: Admin registers a driver for election
@@ -239,7 +241,7 @@ Feature: ATTPL EMS Services
         | License Issuing State    | UPI                            |
         | Vehicle Name             | SUV                            |
         
-   # Then the driver registration should be created successfully
+    Then the driver registration should be created successfully
    # And Admin fetches the driver list
 
 
@@ -252,7 +254,7 @@ Feature: ATTPL EMS Services
         | Base Charge       | 2309            |
         | Weight Capacity   | 5678            |
         | Seating Capacity  | 5               |
-    Then the vehicle details should be submitted successfully
+    Then the vehicle registration should be created successfully
     
     
     Scenario: Admin enters vehicle details for Delivery Service
@@ -264,7 +266,7 @@ Feature: ATTPL EMS Services
         | Base Charge       | 2309                 |
         | Weight Capacity   | 100 kg               |
         
-    #Then the delivery vehicle details should be submitted successfully
+    Then the delivery vehicle details should be submitted successfully
     
     	
  Scenario: Admin schedules a trip for voters
@@ -274,7 +276,7 @@ Feature: ATTPL EMS Services
         | Destination   | City B                                 |
         | Voters        | Soumya Choudhary, Pankaj Saini         |
         | Trip Details  | Trip scheduled for voters successfully |
-    #Then the trip details should be submitted successfully
+    Then the trip should be created successfully
 
   
 ########################################################## ExpenseMS ##############################################################################################        
@@ -331,7 +333,7 @@ Feature: ATTPL EMS Services
     | Password                      | Apple@123                      |
     | Confirm Password              | Apple@123                      |
     
-   #Then the menber registration should be created successfully
+   Then the member registration should be created successfully
    #Then Admin Fetch the Member List
    
 
