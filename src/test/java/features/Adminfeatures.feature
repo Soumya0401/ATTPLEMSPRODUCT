@@ -7,6 +7,7 @@ Feature: ATTPL EMS Admin Services
     Given Admin is on the ATTPL EMS Landing Page
     When Admin logs in with the registered mobile number and password
     Then Admin should see the dashboard
+    
 
    @WebTest
    Scenario: Admin Creates a New Election
@@ -31,7 +32,7 @@ Feature: ATTPL EMS Admin Services
   
   #Party Alliance Managememt
   
-  
+  @MobileTest
   Scenario: Admin Creates Party Alliance 
   Given Admin navigate the party alliance page
   When  Admin fills the create party alliance form with the dataTable:

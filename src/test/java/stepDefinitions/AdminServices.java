@@ -18,10 +18,10 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import hooks.Hooksfile;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -29,19 +29,12 @@ import io.cucumber.java.en.When;
 
 public class AdminServices {
 
-	WebDriver driver;
-
-//////////////////////////////////////////// Login Details /////////////////////////////////////////////////////////
+	WebDriver driver = Hooksfile.driver;
 
 	@Given("Admin is on the ATTPL EMS Landing Page")
 	public void admin_is_on_the_attpl_ems_landing_page() {
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--disable-notifications");
-		driver = new ChromeDriver(options);
-		driver.manage().window().maximize();
 		driver.get("https://app.attplems.com/");
 		// driver.get("https://appdev.attplems.com/");
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
 	}
 
@@ -81,6 +74,7 @@ public class AdminServices {
 		} else {
 			System.out.println("Login Failed");
 		}
+
 	}
 
 //////////////////////////////////////////// Election Management ////////////////////////////////////////////////////////
@@ -1644,11 +1638,15 @@ public class AdminServices {
 		driver.findElement(By.xpath("(//button[normalize-space()='Add New Product'])[1]")).click();
 
 	}
-//     @Then("the product should be created successfully")
-//     public void the_product_should_be_created_successfully() 
-//     {
-//         
-//     }
+
+	@Then("the product should be created successfully")
+	public void the_product_should_be_created_successfully() {
+		WebElement successMessage = driver.findElement(By.xpath("//div[@id='notistack-snackbar']"));
+		String message = successMessage.getText();
+		Assert.assertEquals("Product details added successfully", message);
+		System.out.println("Product details added successfully");
+
+	}
 //     @Then("Admin fetches the Product List")
 //     public void admin_fetches_the_product_list() 
 //     {
@@ -1679,11 +1677,14 @@ public class AdminServices {
 		driver.findElement(By.xpath("(//button[normalize-space()='Modify Roles'])[1]")).click();
 	}
 
-//     @Then("the product mapping should be created successfully")
-//     public void the_product_mapping_should_be_created_successfully() 
-//     {
-//         
-//     }
+	@Then("the product mapping should be created successfully")
+	public void the_product_mapping_should_be_created_successfully() {
+		WebElement successMessage = driver.findElement(By.xpath("//div[@id='notistack-snackbar']"));
+		String message = successMessage.getText();
+		Assert.assertEquals("User Role Mapping Updated successfully", message);
+		System.out.println("User Role Mapping Updated successfully");
+
+	}
 //     @Then("Admin fetches the Product Mapping")
 //     public void admin_fetches_the_product_mapping() 
 //     {
@@ -1742,11 +1743,15 @@ public class AdminServices {
 
 	}
 
-//     @Then("the product modal should be created successfully")
-//     public void the_product_modal_should_be_created_successfully() 
-//     {
-//         
-//     }
+	@Then("the product modal should be created successfully")
+	public void the_product_modal_should_be_created_successfully() {
+		WebElement successMessage = driver.findElement(By.xpath("//div[@id='notistack-snackbar']"));
+		String message = successMessage.getText();
+		Assert.assertEquals("Create success!", message);
+		System.out.println("Create success!");
+
+	}
+
 //     @Then("Admin fetches the Product Modal List")
 //     public void admin_fetches_the_product_modal_list() 
 //     {
@@ -1798,11 +1803,15 @@ public class AdminServices {
 		driver.findElement(By.xpath("(//button[normalize-space()='Create Work'])[1]")).click();
 
 	}
-//     @Then("the product features should be created successfully")
-//     public void the_product_features_should_be_created_successfully() 
-//     {
-//       
-//     }
+
+	@Then("the product features should be created successfully")
+	public void the_product_features_should_be_created_successfully() {
+		WebElement successMessage = driver.findElement(By.xpath("//div[@id='notistack-snackbar']"));
+		String message = successMessage.getText();
+		Assert.assertEquals("Create success!", message);
+		System.out.println("Create success!");
+	}
+
 //     @Then("Admin fetches the Product Features List")
 //     public void admin_fetches_the_product_features_list() 
 //     {
@@ -2010,6 +2019,25 @@ public class AdminServices {
 		((ChromeDriver) driver).executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
 
 		driver.findElement(By.xpath("//button[normalize-space()='Confirm']")).click();
+
+		String employmentType = data.get(5).get(1);
+		WebElement employmentTypeInput = driver.findElement(By.id("autocomplete-employmentType"));
+		selectDropdownOption(employmentTypeInput, employmentType);
+
+		String salaryInput = data.get(6).get(1);
+		WebElement salaryTypeOption = driver.findElement(By.xpath("//button[normalize-space()='Montly']"));
+		salaryTypeOption.click();
+		WebElement salaryTypeInput = driver.findElement(By.name("salary.price"));
+		selectDropdownOption(salaryTypeInput, salaryInput);
+
+		WebElement jobDescription = driver.findElement(By.name("jobDescription"));
+		jobDescription.sendKeys(data.get(7).get(1));
+
+//		WebElement jobRequirement = driver.findElement(By.xpath("//input[@placeholder='Enter Requirements...']"));
+//		jobRequirement.sendKeys(data.get(8).get(1));
+//		WebElement jobRequirement = driver.findElement(By.xpath("//button[normalize-space()='Montly']"));
+//		salaryTypeOption.click();
+
 	}
 
 //     @Then("the job posting should be created successfully")
